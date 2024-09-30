@@ -1,0 +1,90 @@
+﻿@model TaskModel
+
+@{
+    ViewData["Title"] = "Create Task";
+}
+
+<div class="container">
+    <h2>Create New Task</h2>
+    <br />
+    <!-- Form for Creating a New Task -->
+    <form id="createTaskForm" asp-controller="Task" asp-action="Create" method="post" class="form-horizontal">
+        <div class="form-group">
+            <label asp-for="Title" class="control-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <br />
+
+        <div class="form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="form-group">
+            <label asp-for="DeadLine" class="control-label"></label>
+            <input asp-for="DeadLine" class="form-control" type="date" />
+            <span asp-validation-for="DeadLine" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="form-group">
+            <label asp-for="IsComplete" class="control-label">Is this task completed? Yes</label>
+            <input asp-for="IsComplete" class="form-check-input" type="checkbox" />
+            <span asp-validation-for="IsComplete" class="text-danger"></span>
+        </div>
+        <br />
+        <!-- Button to Trigger Modal -->
+        <div class="form-group">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal">Create Task</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<!-- Modal for Confirming Task Submission -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirm Task Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4>Task Summary</h4>
+                <p><strong>Title:</strong> <span id="modalTaskTitle"></span></p>
+                <p><strong>Description:</strong> <span id="modalTaskDescription"></span></p>
+                <p><strong>Deadline:</strong> <span id="modalTaskDeadline"></span></p>
+                <p><strong>Status:</strong> <span id="modalTaskStatus"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Edit</button>
+                <button type="button" class="btn btn-primary" id="submitTaskBtn">Confirm and Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Populate modal with form data
+        $(document).on('click', '[data-target="#confirmModal"]', function () {
+            $('#modalTaskTitle').text($('input[name="Title"]').val());
+            $('#modalTaskDescription').text($('textarea[name="Description"]').val());
+            $('#modalTaskDeadline').text($('input[name="DeadLine"]').val());
+            $('#modalTaskStatus').text($('input[name="IsComplete"]').prop('checked') ? 'Completed' : 'Not Completed');
+        });
+
+        // Handle form submission from the modal
+        $('#submitTaskBtn').on('click', function () {
+            // Submit the form programmatically
+            $('#createTaskForm').submit();
+        });
+    </script>
+}

@@ -1,0 +1,29 @@
+﻿@model TaskModel
+
+@{
+    ViewData["Title"] = "Delete Task";
+}
+
+<div class="container">
+    <h2>Delete Task</h2>
+
+    <!-- Confirm Deletion -->
+    <div class="alert alert-warning">
+        <h4>Are you sure you want to delete the task "<strong>@Model.Title</strong>"?</h4>
+        <p>Deadline: @Model.DeadLine.ToString("dd MMM yyyy")</p>
+    </div>
+
+    <form asp-controller="Task" asp-action="Delete" method="post" class="form-horizontal">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="form-group">
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-danger">Delete</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

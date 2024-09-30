@@ -1,0 +1,75 @@
+﻿@model TaskModel
+
+@{
+    ViewData["Title"] = "Edit Task";
+}
+
+<div class="container">
+    <h2>Edit Task</h2>
+    <br />
+    <!-- Form for Editing the Task -->
+    <form id="editTaskForm" asp-controller="Task" asp-action="Edit" method="post" class="form-horizontal">
+        <div class="form-group">
+            <label asp-for="Title" class="control-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="form-group">
+            <label asp-for="DeadLine" class="control-label"></label>
+            <input asp-for="DeadLine" class="form-control" type="date" />
+            <span asp-validation-for="DeadLine" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="form-group">
+            <label asp-for="IsComplete" class="control-label">Is this task completed? Yes</label>
+            <input asp-for="IsComplete" class="form-check-input" type="checkbox" />
+            <span asp-validation-for="IsComplete" class="text-danger"></span>
+        </div>
+        <br />
+        <div class="form-group">
+            <input type="hidden" asp-for="Id" />
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            <!-- Trigger Modal on Save -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmEditModal">
+                Save Changes
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Modal for Confirming Edits -->
+<div class="modal fade" id="confirmEditModal" tabindex="-1" aria-labelledby="confirmEditModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmEditModalLabel">Confirm Edits</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to save these changes to the task?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="confirmEditBtn" class="btn btn-primary">Confirm and Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        // JavaScript to handle form submission upon modal confirmation
+        $('#confirmEditBtn').on('click', function () {
+            // Submit the form programmatically
+            $('#editTaskForm').submit();
+        });
+    </script>
+}
